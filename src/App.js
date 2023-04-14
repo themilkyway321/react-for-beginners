@@ -1,31 +1,21 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import Detail from "./routes/Detail";
+import Home from "./routes/Home";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] =useState([]);
-  const onChange = (event) => setToDo(event.target.value);
-  const onSubmit = (event) => {event.preventDefault();
-    if (toDo === ""){
-      return;
-    }
-    
-    setToDos(currentArray => [toDo, ...currentArray]);
-    setToDo("");
-  };
-  console.log(toDos);
+
   return (
-    <div>
-      <h1>My To Dos ({toDos.length})</h1>
-     <form onSubmit={onSubmit}>
-        <input 
-        value={toDo}
-        onChange={onChange}
-        type="text" 
-        placeholder="Write your to do..." />
-        <button>Add To Do</button>
-     </form>
-    </div>
-  );
+    <Router>
+      <Switch>
+        <Route path="/movie/:id">
+          <Detail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
+    );
 }
 
 export default App;
