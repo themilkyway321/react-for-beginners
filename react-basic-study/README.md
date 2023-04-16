@@ -983,3 +983,145 @@ function App() {
 
 export default App;
 ```
+
+## Router
+Router란 http 주소 내에서 보여줄 페이지를 골라주는
+
+길잡이 역할을 한다.
+```
+import { BrowserRouter as Router, Routes, Route, } from "react-router-dom";
+import Home from "./routes/Home";
+import Movie from "./routes/Detail"
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/movie" element={<Movie />}></Route>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+    </Router>
+  )
+}
+
+export default App;
+```
+윗 코드에서 react-router-dom으로부터 BrowserRouter, Routes, Route를 빌려 와
+
+주소 뒤에 /movie가 붙었을 때는 Movie component를,
+
+아무 것도 붙어 있지 않을 때는 Home component를 불러 옴을 알 수 있다.
+
+
+## ReactJS Params, Link
+
+Params는 사이트 주소 상의 :id 부분을 통해
+
+개발자들에게 지금 다루는 API 정보를 쉽게 접근할 수 있는 기능을 수행해준다.
+
+다음은 내가 만든 영화 소개 페이지이다.
+```
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+// useParams() -> returns id(the last one in path)
+import { Link } from 'react-router-dom';
+
+function Detail() {
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [currMovie, setCurrMovie] = useState("");
+    
+    const getMovie = async () => {
+        const json = await (
+            await fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`)
+        ).json();
+        // Give currMovie an inforamtion in form of json
+        setCurrMovie(json);
+        // set Loading status false
+        setLoading(false);
+    };
+
+    // Get API by using getMovie function
+    useEffect(() => {
+        getMovie();
+    }, [])
+    
+    return (
+        <div>
+            {loading ? <h1>Loading,,,</h1> : // if it is still on loading,, 
+                // if loading finished,,,
+                <div>
+                    <img src={currMovie.data.movie.medium_cover_image}></img>
+                    <h3> Title : {currMovie.data.movie.title}</h3>
+                    <h3> Genres : {currMovie.data.movie.genres[0]}</h3>
+                    <h3> Year : {currMovie.data.movie.year}</h3>
+                    <h3> Languages : {currMovie.data.movie.language}</h3>
+                    <h3><Link to='/' style={{textDecoration:"none", color:"black"}}>Go back</Link></h3>
+                </div>
+            }
+        </div>
+    )
+}
+export default Detail;
+```
+모든 routing은 이 파일 밖의 App.js가 수행한다 (*참고)
+
+ 
+
+return문을 보면, 최초의 loading 상태에 따라 UI에 표기되는 정보가 달라진다.
+
+loading은 useState를 통해 정의되어 있는데, 그 default값은 true이다.
+
+그러므로 처음에는 UI에 h1태그 안에 담긴 Loading,,, 밖에 나타나지 않는다.
+
+그러나 useEffect()를 통해 getMovie() 함수가 실행되면,
+
+이는 json을 이용해(여긴 잘 모름) API를 통해 영화에 대한 정보를 가져온다.
+
+이 때에 중요한 역할을 하는 것이 Params인데, {id}는 Params를 통해 고유한 값을 전달받는다.
+
+그 값을 이용, 주소를 통한 필터링을 통해 json을 통해 어떻게 어떻게 가져오는 것이다. 
+
+중요한 것은 이렇게 얻은 json 값을 setCurrMovie 함수를 통해 currMovie에 할당하는데,
+
+이는 영화에 대한 정보를 담은 정보 꾸러미(?)에 해당한다.
+
+이와같은 정보 꾸러미를 currMovie에 할당한 후, loading은 false 상태가 되고, UI는 한번 더 불러와진다.
+
+ 
+
+그러면 loading은 false이니, 아까의 Loading,,,은 더 이상 나타나지 않고,
+
+제목, 장르, 연도, 언어 등 내가 설정한 정보가 UI에 나타난다.
+
+ 
+
+* 추가적으로 Link는 router의 방향을 쉽게 틀어주는 도구인데,
+
+클릭과 동시에 내가 원하는 라우터 (위의 코드에서는 '/')로 사용자를 보내준다. *
+
+
+
+## React 스타일
+
+- 글로벌 스타일: 
+index.js에 파일에
+```
+import './style.css';
+```
+이렇게 적용해주면, style.css에 있는 모든 내용이 적용. 
+
+- 직접주기: 아래 코드 처럼 직접 주기
+```
+<button style={{backgroundColor:'black'}}>{text}</button>
+```
+- CSS 모듈: 
+Movie.js파일에 
+적용할 파일이름.module.css 파일을 만들고 import 후에,  
+className들로 해주고 module.css에서는 .mainImg{} 이런식으로 스타일을 주면된다. 
+```
+import styles from "./Movie.module.css";
+ <img className={styles.mainImg} />
+```
+
+
+

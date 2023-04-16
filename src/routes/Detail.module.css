@@ -1,0 +1,44 @@
+.detailsInfo {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  color: #fff;
+  
+}
+.detailsInfo::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #00000054;
+}
+.detailsImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+ 
+}
+.detailsContent {
+  z-index: 1;
+  position: absolute;
+top: 120px;
+left: 120px;
+width: 800px;
+margin: auto;
+}
+.detailsContent h2 a {
+  color: #fff;
+
+}
+
+.detailsContent h2 a:hover {
+  text-decoration: underline;
+  color: yellow;
+}
