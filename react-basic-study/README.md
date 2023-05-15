@@ -7,18 +7,18 @@
 - 리액트를 import했기 때문에 createElement function을 가진 리액트 object에 접근 가능
 const span 그러나 createElement(“span”) 은 반드시 생성하고자 하는 HTML 태그와 똑같아야함
 
-- React JS - 어플리케이션이 아주 인터랙티브하도록 만들어주는 library. 엔진과 같다.
-- React-dom - library 또는 package. 모든 react element들을 HTML body에 둘 수 있도록 해줌.
-- ReactDOM.render() - render의 의미는 react element를 가지고 HTML로 만들어 배치한다는 것. 즉, 사용자에게 보여준다는 의미
-- ReactDOM.render(span, span이 가야할 위치) -> 그래서 보통 body에 id=“root” 만들어서 span을 root 안에 두라고 함
+- React JS - 리액트 js가 element를 생성하고,이벤트를 생성하고, 스타일도 추가하는 등,  어플리케이션이 아주 인터랙티브하도록 만들어주는 library. 엔진과 같다.
+- React-dom - library 또는 package. 모든 react element들을 HTML body에 둘 수 있도록 해줌. <br>
+=> ReactDOM.render() - render의 의미는 react element를 가지고 HTML로 배치한다는 것. 즉, 사용자에게 보여준다는 의미<br>
+=> ReactDOM.render(span, span이 가야할 위치) -> 그래서 보통 body에 id=“root” 만들어서 span을 root 안에 두라고 함
 
 - React.createElement("span", {span의 property}, “span의 내용”)
 -> property는 class name, id도 가능 style도 가능, 이벤트도 가능
 -> 참고만 하고 외우지 말기. 이렇게 쓸 일 없음
 
-> 바닐라JS는 HTML -> JS 순서/ 리액트는 JS -> HTML 순서
-
-- JS가 element를 생성하고 React JS가 그것을 HTML로 번역하는 것
+> 바닐라 js와 리액트 js의 차이: 바닐라JS는 HTML -> JS 순서이고 리액트는 JS -> HTML 순서
+<br>
+- React JS가 element를 생성하고 React JS가 그것을 HTML로 번역하는 것
 - React JS는 업데이트 해야 하는 HTML을 업데이트 할 수 있음. properties를 이용하여 이를 간단하게 구현할 수 있다는 점이다.
 
 ```
@@ -69,11 +69,11 @@ const span 그러나 createElement(“span”) 은 반드시 생성하고자 하
 
 ## JSX 문법
 
-일반적인 JS문법을 좀더 사용하기 편리하게 한 버전을 JSX문법이라고 한다.
+일반적인 JS문법을 좀더 사용하기 편리하게 한 버전을 JSX문법이라고 한다. 보통의 HTML과 비슷해서 많은 개발자들이 jsx문법을 활용하여 리액트를 쓴다. property를 HTML 태그의 속성처럼 적으면 된다. 
 
 그리고 이러한 문법을 그대로 js로 사용하면 당연히 브라우저가 못알아듣기 때문에 다음과 같은 설치가 필요하다.
 
-bable에서 제공하는 JSX신텍스 해독기와
+babel에서 제공하는 JSX신텍스 해독기와  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 매 script마다 type="text/label"을 넣어줘야하는 번거로움이 있다.
 
@@ -112,9 +112,9 @@ bable에서 제공하는 JSX신텍스 해독기와
   </script>
 </html>
 ```
-JSX에서 element를 만들 때에는
+위의 코드를 이제 조금 더 다듬어보자. 
 
-함수 형식으로 만들어 이를 return 즉 반환하는 형태로 나타낸다.
+JSX에서 element를 만들 때에는 함수 형식으로 만들어 이를 return 즉 반환하는 형태로 나타낸다. function 이름(){return};형태로 쓰거나, arrow function으로 const 이름 => () => ();로 쓴다. 
 ```
 function Title() {
       return (
