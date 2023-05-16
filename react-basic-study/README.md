@@ -172,6 +172,9 @@ function Title() {
 - 이것이 function rerender()과, countUp()을 하는 순간 이를 호출하는 것이다. rerender()이 없으면 UI는 변하지 않는다.
 
 - 또한 리액트가 대단한 점은, rerendering 시점에서 Container 전부를 rerendering 하는 것이 아니라, 바뀌는 부분 즉, 이곳에서는 cnt부분만 rerendering 한다는 것이다.
+- 
+=> 변경된 부분만 업데이트된다는게 왜 좋은것일까
+일반 자바스크립트를 쓴 브라우저는 노드정보가 바뀔때마다 노드트리를 처음부터 다시 5단계에 걸쳐서 생성. 근데 리액트는 가상돔을 써서 우리 시야에 보이는 부분만 수정해서 보여주고 모든 업뎃이 끝나면 일괄로 합쳐서 실제 돔에 던져준다! 렌더트리 단계를 얼마나 최적화하는가가 중요하다!
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -233,7 +236,7 @@ React.useState() 함수는 초기값을 설정할 수 있음
  이제 배열을 꺼내오는 쉬운 방법
 ```
 const name = ["miri", "milkyway"];
-const [myName, nickname] = na
+const [myName, nickname] = name;
 myName 의 결과는 miri nickname의 결과는 milkyway로 꺼내올 수 있음. 
 ```
 
