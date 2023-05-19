@@ -503,13 +503,11 @@ backgroundColor: "tomato",
 이런 스타일들을 모두 갖는 단 한가지의 컴포넌트로 만들어 재사용 가능
 
 다음 코드를 살펴보자. 
- App 컴포넌트는 Btn 컴포넌트를 두 번 작동시키는데,
-
-이 때에 중요한 점은 인수를 안고 넘어간다는 것이다.
+ App 컴포넌트는 Btn 컴포넌트를 두 번 작동시키는데, 이 때에 중요한 점은 인수를 안고 넘어간다는 것이다. 객체 형태로 전달 
 
 첫 Btn의 경우 banana라는 키에 Save Changes라는 값 그리고 big이라는 키에 true라는 값을 갖고 넘어가며,
-
-이에 따라 버튼에 쓰여질 내용, 그리고 글씨 크기가 정해져 첫 버튼이 print된다.
+이런 형태로 {banana: "Save Changes", big:true} 
+이에 따라 버튼에 쓰여질 내용, 그리고 글씨 크기가 정해져 첫 버튼이 출력된다.
 
 그리고 두번째 Btn의 경우 banana라는 키에 Continue라는 값 그리고 big 이라는 키에 false라는 값을 갖고 넘어간다.
 
@@ -555,6 +553,61 @@ backgroundColor: "tomato",
   </script>
 </html>
 ```
+## props에 function도 넘겨줄 수 있다. 
+
+  const changeValue = () => {
+        setValue("Revert Changes");
+      }
+<Btn banana={value} changeValue={changeValue} /> 이런 식으로 객체를 넘겨 줄 수 있다. 
+
+객체를 받은 Btn 에onClick이벤트 주기 
+
+
+      
+```
+<!DOCTYPE html>
+<html lang="ko">
+  <body>
+    <div id="root"></div>
+  </body>
+  
+  <!-- How to import React(engine) -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <!-- How to import React-dom(put elements into HTML) -->
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <!-- How to make browser read JSX syntax (using babel)-->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <script type="text/babel">
+    
+    function Btn({ banana, changeValue}) {
+      return <button
+      onClick ={changeValue}
+      style={{backgroundColor:"tomato", color:"white", padding:"10px 20px", border:0, borderRadius:10,}
+    }>
+      {banana}
+      </button>
+    }
+    
+    function App () {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
+      return (
+        <div>
+          <Btn banana={value} changeValue={changeValue} />
+          <Btn banana="Continue" />
+        </div>
+      )
+    };
+
+    // find id="root" from document(HTML)
+    const root = document.getElementById("root");
+    
+    // initial render
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
+```
 
 
 ## React.memo()
@@ -563,7 +616,7 @@ backgroundColor: "tomato",
 
 변화하는 부분만 HTML에서 쏙쏙 빼와 변화시켜준다는 점을 공부한 적이 있다.
 
-그러나 useState의 modifier 함수가 변화할 때 부모 컴포넌트를 모두 변화시키면
+그러나 리액트의 특징은 useState의 modifier 함수가 변화할 때, 부모 컴포넌트를 모두 변화시킨다는 특징이 있다. 
 
 조금은(?) 어쩌면 많이 비효율적인 생산 방식으로 빠질 수도 있다.
 
