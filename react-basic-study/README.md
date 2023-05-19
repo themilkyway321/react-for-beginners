@@ -623,7 +623,7 @@ backgroundColor: "tomato",
  
 
 다음 코드를 살펴보자
-
+```
 <!DOCTYPE html>
 <html lang="en">
   <body>
@@ -677,6 +677,7 @@ backgroundColor: "tomato",
     ReactDOM.render(<App />, root);
   </script>
 </html>
+```
 이코드는 완성된 코드지만,
 
 만약 App() 컴포넌트에서 MemorizedBtn을 사용하지 않았다면,
@@ -789,9 +790,53 @@ fontSize는 number이여야만 한다는 사실을 미리 리액트에게 교육
 <br /><br />
 
 # == 여기서부터는 React app 설치해서 강의 노트 정리 ==
+## 초기 set up 
+https://nodejs.org/ko/download
+1. node js 사용자 버전 설치
+2. 윈도우키 + R 누르면 실행창 뜸
+3 .열기 칸에 cmd 라고 입력하고 확인
+4. 나오는 창에 node -v 입력해서 잘 설치됐는지 확인 후 영상대로 따라하기
+5. npx를 실행할 수 있는지 보기 
 
+폴더만들기 
+
+1. npx create-react-app react-for-beginners
+2. 이제 visual studio를 열고 npm start 해보기 
+3. npm i prop-types 
+
+create-react-app을 사용하면 좋은 점. 
+컴포넌트 당 1개의 .js 파일을 가질 수 있어서 모듈화가 가능하다.
+- 컴포넌트별 스타일은 이름.module.css 파일을 생성 + import 하여 사용
+=> 여기서 스타일은 className이나 id로 import한 스타일 객체의property를 전달하여 적용된다는 것!react 컴파일 과정 중 random class나 id가 생성되기 때문에 class나 id 이름을 중복해서 사용할 수 있다. 예를 들어 아래 App.module.css title이라는 이름의 클래스를 사용하더라도, react 컴파닝 과정 중에 클래스가 새로 생성되므로, title이라는 클래스 이름을 Button.module.css 에서도 사용할 수 있다. 
+App.js
+```
+import Button from "./Button";
+import styles from "./App.module.css";
+
+function App() {
+  return (
+    <div>
+      <h1>Welcome back!!!</h1>
+      <h1 className={styles.title}>Welcome back!!!</h1>
+      <Button text={"Continue"} />
+    </div>
+  );
+}
+```
+
+App.module.css
+```
+.title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 18px;
+}
+```
 
 ## import { useState, useEffect } Ⅰ
+
+
+ const [counter, setValue] = useState(0); create react app을 사용하기 때문에 React.useState()대신 useState()를 사용할 수 있다. 
 
 이전에도 다룬적이 있지만,
 
@@ -805,6 +850,16 @@ useState()를 사용하면 modifier 함수를 불러올 때마다.
 
 이를 막기 위해 리액트는 useEffect를 제시한다.
 
+useEffect
+- 두 개의 argument를 가지는 함수
+- 첫 번째 argument는 우리가 딱 한번만 실행하고 싶은 코드
+- 두 번째는 [] 배열을 넣어줌
+-> useEffect가 컴포넌트의 첫 번째 렌더 시점에만 호출하고
+그리고 useState상태를 변화시켜도  호출되지 않음
+즉, 한번만 렌더링 됨
+단순화 하여 useEffect(() => {
+console.log("CALL THE API")
+},[]); 써도 됨
  
 
 다음 코드를 살펴보자
@@ -901,11 +956,22 @@ function App() {
 export default App;
 
 ```
-useEffect(() => {변했을때 취할 액션}, [변했을때 반응했으면 하는 원소])
+useEffect(() => {변했을때 취할 액션}, [변했을때 반응했으면 하는 원소]) 를 사용하여, 변했을 때 반응했으면 하는 원소와 변했을 때 취할 액션을 정할 수 있다. 
 
-를 사용하여, 변했을 때 반응했으면 하는 원소와 변했을 때 취할 액션을 정할 수 있다.
+  useEffect(() => {
+      console.log(`I run when ${keyword} changes`);
+  }, [keyword]);
+  즉, 처음 렌더링할때 실행되고, 그 다음은 keyword가 변했을때만 cosole.log실행 
 
 
+  useEffect(() => {
+    // if the keyword is longer than 5 -> working
+    if (keyword.length > 5) {
+      console.log(`I run when ${keyword} changes`);
+    }
+  }, [keyword]);
+  
+  얘는 처음에 랜더링이 안된다,,왜? 조건이 있어!! 키워드 글자가 5개 초과하면 실행하라는 조건!
 
 ## Cleaup function
 
@@ -920,30 +986,21 @@ useEffect(() => {변했을때 취할 액션}, [변했을때 반응했으면 하�
 이것은 원래 '함수'가 destroy 될 때,  일어나는 다른 함수를 지칭한다.
 즉, 나 자신이 사라질 때 남기고 갈 함수를 의미한다.
 
+즉 아래 코드에서  <Hello />가 showing 될때 cosole에 hi출력, hide되어 null일때 console에 bye 출력 
+
 ```
 import { useState, useEffect } from "react";
 
 function Hello() {
 
-  // useEffect runs function
-  // and reapeat it every time the dependencies(inside []) changes
+  
   useEffect(() => {
-    console.log("Hi :)");
+    console.log("Hi");
     return () => {
-      console.log("bye :(");
+      console.log("bye");
     }
   }, [])
   
-  // same meaning another ver.
-  // useEffect runs function
-  // and reapeat it every time the dependencies(inside []) changes
-  // useEffect(function () {
-  //   console.log("Hi :)");
-  //   return function () {
-  //     console.log("bye :(");
-  //   }
-  // }, []);
-
   return <h1>Hello</h1>
 }
 
