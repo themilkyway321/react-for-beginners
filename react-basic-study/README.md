@@ -1033,7 +1033,71 @@ name.map((item)=> item.toUpperCase());
 ```
 결과는  ['MIRI', 'HAERI']
 
+## To Do List 
+리액트에서 수정하는 함수를 사용할때 2가지 방식이 있어. 
+=>
+1) 값을 저장하거나, 
+const [toDo, setTodo] =useState();
+setTodo("");
 
+2)
+함수를 보내는 방식: 함수를 보낼때, 인자는 현재의 state를 첫번째 인자로 보낸다. 
+const [toDos, setToDos] = useState([]);
+setToDos((currentArray) => [toDo, ...currentArray]);
+
+
+...currentArray는 배열에 추가하는 방식
+const pizza = [1,2,3,4];
+const newPizza = [5, ...pizza]; 의 결과는 [5,1,2,3,4]
+
+
+3) 자바스크립트 map함수
+
+a배열.map(함수실행): a배열에 있는 각 원소들마다 함수를 실행해서, 새로운 배열을 만들어 낸다. 
+const pizza =[1,2,3,4];
+
+pizza.map((item)=>item+1)의 실행 결과 [2, 3, 4, 5]
+```
+import { useState, useEffect } from "react";
+
+function App() {
+  const [toDo, setTodo] =useState();
+  const onChange = (event) =>{
+    setTodo(event.target.value);
+  };
+  const [toDos, setToDos] = useState([]);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if( toDo === ""){
+      return;
+    }
+    
+    setToDos((currentArray) => [toDo, ...currentArray]);
+    setTodo("");
+    
+  }
+  console.log(toDos);
+  return (
+    <div>
+      <h1>My To Dos {toDos.length}</h1>
+      <form onSubmit={onSubmit}>
+        <input
+        onChange={onChange}
+        value={toDo}
+        type="text"
+        placeholder="Write your name.."
+        />
+        <button>Click</button>
+      </form>
+      <hr />
+      <ul>{toDos.map((item, index)=><li key={index}>{item}</li>)}</ul>
+    </div>
+  );
+}
+
+export default App;
+
+```
 ## coin tracker 프로젝트 
 
 *event.target[1].value 왜 1이 되는지, 계속 이해가 안됐는데, 
