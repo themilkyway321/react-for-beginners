@@ -1324,7 +1324,8 @@ import styles from "./Movie.module.css";
 
 ```
 ## Router Link 
-```<h2><a href="/movie">{title}</a></h2> 이렇게 하게되면, 이동할 때 전체페이지가 새로고침된다. 
+```
+<h2><a href="/movie">{title}</a></h2> 이렇게 하게되면, 이동할 때 전체페이지가 새로고침된다. 
 ```
 ```
 <h2><Link to="/movie">{title}</Link></h2> Router의 Link 를 사용하면 새로고침되지 않음 
