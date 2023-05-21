@@ -1301,4 +1301,119 @@ import styles from "./Movie.module.css";
 ```
 
 
+## 데이터를 가져오는 방식 fetch
+1) 
+```
+ useEffect(()=> {
+    fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`).then((response) => response.json()).then((json) => {
+      setMovies(json.data.movies);
+      setLoading(false)
+    });
+  },[]);
+```
+2) 1)이랑 같은 표현 
+```
+ const getMovies = async() => {
+    const json = await(await fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`)).json();
+    setMovies(json.data.movies);
+    setLoading(false);
+  };
+  useEffect(()=>{
+    getMovies();
+  },[])
+
+```
+## Router Link 
+<h2><a href="/movie">{title}</a></h2> 이렇게 하게되면, 이동할 때 전체페이지가 새로고침된다. <br>
+<h2><Link to="/movie">{title}</Link></h2> Router의 Link 를 사용하면 새로고침되지 않음 
+
+
+## useParams
+
+App.js에서 movie뒤에 id 인자 넘겨줌. 
+```
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import Home from "./routes/Home";
+import Detail from "./routes/Detail";
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/movie/:id">
+          <Detail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
+    );
+}
+
+export default App;
+```
+
+
+```
+import { useParams } from "react-router-dom";
+function Detail(){
+  const x = useParams();
+  console.log(x);
+  return <h1>Detail</h1>;
+}
+
+export default Detail;
+```
+console.log(x)의 결과는 {id: '51899'}이것을 출력. 
+
+
+따라서 
+```
+import { useParams } from "react-router-dom";
+function Detail(){
+  const {id} = useParams();
+  console.log(id);
+  return <h1>Detail</h1>;
+}
+
+export default Detail;
+```
+console.log(id);의 결과값은 51899을 출력 
+
+## Publishing
+
+- npm i gh-pages
+(npm run build)  생략?
+
+- package.json에 deploy, predeploy부분 추가 
+```
+ "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build"
+  },
+ ```
+- package.json에 homepage 추가 
+```
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+"homepage": "https://nomadcoders.github.io/react-for-beginners"
+```
+
+- npm run deploy
+
 
